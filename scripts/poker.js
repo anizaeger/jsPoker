@@ -559,9 +559,9 @@ function checkHand() {
 
 function flushChk() {
 	var flush = true;
-	var flushSuit = cardSuits[ 0 ];		// Set suit of first card in hand
+	var flushSuit = cardSuits[ 0 ];		// Get suit of first card in hand
 	for ( c = 1; c < 5 ; c++ ) {		// Test each subsequent card
-		if ( cardSuits[ c ] != flushSuit ) {	// If suits mismatch, no flush
+		if ( cardSuits[ c ] != flushSuit ) {	// If suit of subsequent card doesn't match first, no flush
 			flush = false;
 			break;
 		}
@@ -626,9 +626,20 @@ function straightChk() {
 
 function commCard() {
 
+	/*
+		commCard() Return Values:
+			2: FOURKIND
+			6: THREEKIND
+			7: TWOPAIR
+			8: JACKSBETTER
+			9: LOSS
+	*/
+
 	var retVal = 9;	// Default to 9: LOSS
 	var pairs = 0;	// Pair counter
 	var jacksBetter = 0
+	var quad = -1;
+	var kicker = -1;
 
 	var faceCount = new Array(13);	// Array storing count of cards of each face value
 
@@ -643,7 +654,13 @@ function commCard() {
 
 	for ( x = 0; x < 13; x++ ) {
 		if ( faceCount[ x ] == 4 ) {	// FOURKIND
+			quad = x;
 			retVal = 2;
+			for ( y = 0; y < 13; y++ ) {
+				if ( faceCount[ y ] == 1 ) {
+					kicker = y;
+				}
+			}
 			break;
 		} else if ( faceCount[ x ] == 3 ) {		// Three of a kind
 			retVal = 6;
