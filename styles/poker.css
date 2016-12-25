@@ -1,0 +1,20 @@
+.card {
+ 	text-align: center;
+	display: table-cell;
+	vertical-align: bottom;
+	-moz-user-select: -moz-none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+}
+
+.held {
+ 	text-align: center;
+	display: table-cell;
+	vertical-align: top;
+}
+
+#winningHand {
+ 	text-align: center;
+	display: table-cell;
+	vertical-align: middle;
+}
