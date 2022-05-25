@@ -1,43 +1,54 @@
-/*
-Copyright (C) 2016, Anakin-Marc Zaeger
-
-@source: pbx.nyfnet.net/keno/scripts/keno.js
-
-@licstart
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-@licend
-
-*/
+/**
+ *
+ * @source: https://github.com/anizaeger/jsPoker
+ *
+ * @licstart  The following is the entire license notice for the 
+ * JavaScript code in this page.
+ *
+ * Copyright (C) 2016 Anakin-Marc Zaeger
+ *
+ *
+ * The JavaScript code in this page is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ *
+ * @licend The above is the entire license notice
+ * for the JavaScript code in this page.
+ *
+ */
 
 function gplAlert() {
-	var copyText = "";
-	copyText += "Copyright (C) 2016, Anakin-Marc Zaeger\n"
-	copyText += "\n"
-	copyText += "This program is free software: you can redistribute it and/or modify\n"
-	copyText += "it under the terms of the GNU General Public License as published by\n"
-	copyText += "the Free Software Foundation, either version 3 of the License, or\n"
-	copyText += "(at your option) any later version.\n"
-	copyText += "\n"
-	copyText += "This program is distributed in the hope that it will be useful,\n"
-	copyText += "but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-	copyText += "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-	copyText += "GNU General Public License for more details.\n"
-	copyText += "\n"
-	copyText += "You should have received a copy of the GNU General Public License\n"
-	copyText += "along with this program.  If not, see <http://www.gnu.org/licenses/>.\n"
-	window.alert(copyText)
+	var copyTxt = "";
+	copyTxt += "Copyright (C) 2016 Anakin-Marc Zaeger\n"
+	copyTxt += "\n"
+	copyTxt += "\n"
+	copyTxt += "The JavaScript code in this page is free software: you can\n"
+	copyTxt += "redistribute it and/or modify it under the terms of the GNU\n"
+	copyTxt += "General Public License (GNU GPL) as published by the Free Software\n"
+	copyTxt += "Foundation, either version 3 of the License, or (at your option)\n"
+	copyTxt += "any later version.  The code is distributed WITHOUT ANY WARRANTY;\n"
+	copyTxt += "without even the implied warranty of MERCHANTABILITY or FITNESS\n"
+	copyTxt += "FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.\n"
+	copyTxt += "\n"
+	copyTxt += "As additional permission under GNU GPL version 3 section 7, you\n"
+	copyTxt += "may distribute non-source (e.g., minimized or compacted) forms of\n"
+	copyTxt += "that code without the copy of the GNU GPL normally required by\n"
+	copyTxt += "section 4, provided you include this license notice and a URL\n"
+	copyTxt += "through which recipients can access the Corresponding Source.\n"
+	window.alert(copyTxt)
 }
+
 
 /*
 	Game Initialization
@@ -559,9 +570,9 @@ function checkHand() {
 
 function flushChk() {
 	var flush = true;
-	var flushSuit = cardSuits[ 0 ];		// Set suit of first card in hand
+	var flushSuit = cardSuits[ 0 ];		// Get suit of first card in hand
 	for ( c = 1; c < 5 ; c++ ) {		// Test each subsequent card
-		if ( cardSuits[ c ] != flushSuit ) {	// If suits mismatch, no flush
+		if ( cardSuits[ c ] != flushSuit ) {	// If suit of subsequent card doesn't match first, no flush
 			flush = false;
 			break;
 		}
@@ -626,9 +637,20 @@ function straightChk() {
 
 function commCard() {
 
+	/*
+		commCard() Return Values:
+			2: FOURKIND
+			6: THREEKIND
+			7: TWOPAIR
+			8: JACKSBETTER
+			9: LOSS
+	*/
+
 	var retVal = 9;	// Default to 9: LOSS
 	var pairs = 0;	// Pair counter
 	var jacksBetter = 0
+	var quad = -1;
+	var kicker = -1;
 
 	var faceCount = new Array(13);	// Array storing count of cards of each face value
 
@@ -643,7 +665,13 @@ function commCard() {
 
 	for ( x = 0; x < 13; x++ ) {
 		if ( faceCount[ x ] == 4 ) {	// FOURKIND
+			quad = x;
 			retVal = 2;
+			for ( y = 0; y < 13; y++ ) {
+				if ( faceCount[ y ] == 1 ) {
+					kicker = y;
+				}
+			}
 			break;
 		} else if ( faceCount[ x ] == 3 ) {		// Three of a kind
 			retVal = 6;
